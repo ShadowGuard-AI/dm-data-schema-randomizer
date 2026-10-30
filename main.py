@@ -3,7 +3,7 @@ import logging
 import pandas as pd
 import numpy as np
 import random
-from faker import Faker
+import sys
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -29,7 +29,7 @@ def randomize_column_names(df, seed=None):
     Returns:
         pd.DataFrame: A DataFrame with renamed columns.
     """
-    if seed:
+    if seed is not None:
         random.seed(seed)
     new_names = [f"column_{i}" for i in range(len(df.columns))]
     random.shuffle(new_names)
@@ -47,7 +47,7 @@ def reorder_columns(df, seed=None):
     Returns:
         pd.DataFrame: A DataFrame with reordered columns.
     """
-    if seed:
+    if seed is not None:
         random.seed(seed)
     columns = list(df.columns)
     random.shuffle(columns)
@@ -66,9 +66,9 @@ def change_data_types(df, seed=None):
     Returns:
         pd.DataFrame: A DataFrame with modified data types.
     """
-    if seed:
+    if seed is not None:
         random.seed(seed)
-    
+
     for col in df.columns:
         original_type = df[col].dtype
         
@@ -82,8 +82,15 @@ def change_data_types(df, seed=None):
             possible_types = [t for t in possible_types if t not in numeric_types]
 
 
-        if original_type == 'object':
-            possible_types = [t for t in possible_types if t != 'category']
+        if not pd.api.types.is_numeric_dtype(df[col]):
+            # A text column must never be offered a numeric type: to_numeric
+            # with errors='coerce' turns every non-numeric string into NaN and
+            # the fillna then rewrites the whole column to 0, destroying the
+            # data the tool only meant to re-type. Category keeps every value.
+            # The check is numeric-ness, not dtype == 'object': current pandas
+            # infers a 'str' dtype for text columns, which the old object
+            # check missed, so text columns still reached the numeric branch.
+            possible_types = ['category']
         
         # Remove the original data type to avoid converting to the same type
         try:
@@ -163,10 +170,13 @@ def main():
 
     except FileNotFoundError as e:
         logging.error(e)
+        sys.exit(1)
     except ValueError as e:
         logging.error(e)
+        sys.exit(1)
     except Exception as e:
         logging.error(f"An unexpected error occurred: {e}")
+        sys.exit(1)
 
 if __name__ == "__main__":
     main()
