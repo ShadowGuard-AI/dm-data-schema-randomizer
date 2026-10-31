@@ -13,5 +13,7 @@ Randomly renames, reorders, and changes the data types of columns in a dataset t
 - `-h`: Show help message and exit
 - `--seed`: Random seed for reproducibility.
 
+The output file must not be the input file. A run that names the same file for both, in any spelling that resolves to the same path, is refused at exit 1 before any write.
+
 ## License
 Copyright (c) ShadowGuardAI

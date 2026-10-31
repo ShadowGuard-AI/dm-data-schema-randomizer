@@ -4,6 +4,7 @@ import pandas as pd
 import numpy as np
 import random
 import sys
+from pathlib import Path
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -154,6 +155,10 @@ def main():
     try:
         # Input validation
         validate_input(args.input_file)
+
+        if Path(args.input_file).resolve() == Path(args.output_file).resolve():
+            logging.error("Output file must not be the same as the input file.")
+            sys.exit(1)
 
         # Read the CSV file into a Pandas DataFrame
         df = pd.read_csv(args.input_file)
