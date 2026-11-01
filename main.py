@@ -104,7 +104,13 @@ def change_data_types(df, seed=None):
             continue
         
         new_type = random.choice(possible_types)
-        
+
+        # Reading the filters above honestly: a numeric column is only ever
+        # offered string or category, and a non-numeric column is only ever
+        # offered category. So the two numeric branches below cannot be
+        # reached as the code stands. They stay as the record of the wider
+        # conversion I first wrote, fenced off by the guard that keeps text
+        # columns from being coerced into zeros.
         try:
             if new_type == np.int64:
                 df[col] = pd.to_numeric(df[col], errors='coerce').fillna(0).astype(np.int64)
@@ -153,7 +159,11 @@ def main():
     args = parser.parse_args()
 
     try:
-        # Input validation
+        # Validation runs before the same path refusal here, the opposite
+        # order from some of my other tools: a missing input is reported
+        # before an in-place output is. Validation also only proves the
+        # file opens and its name ends in .csv; nothing checks the content
+        # until pandas tries to parse it.
         validate_input(args.input_file)
 
         if Path(args.input_file).resolve() == Path(args.output_file).resolve():
@@ -165,6 +175,15 @@ def main():
         logging.info(f"Successfully read input file: {args.input_file}")
 
         # Apply randomization steps
+        # All three steps receive the same seed, and each one calls
+        # random.seed with it before drawing anything. So the steps do not
+        # draw from one long random stream: each restarts the stream at the
+        # same place. With the same column count, the rename shuffle and the
+        # reorder shuffle walk the same pattern, two views of one roll
+        # rather than two independent rolls. Reproducible, yes; independent,
+        # no, and I would rather have that written down than discovered.
+        # The order also matters for the logs: renaming runs first, so the
+        # type step reports columns by their new generic names only.
         df = randomize_column_names(df, args.seed)
         df = reorder_columns(df, args.seed)
         df = change_data_types(df, args.seed)
