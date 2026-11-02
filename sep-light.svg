@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 36" role="img" aria-label="Minor separator: a short centred board green line with a small iron key at its centre">
+<line x1="470" y1="18" x2="572" y2="18" stroke="#2f5d50" stroke-width="3"/>
+<line x1="628" y1="18" x2="730" y2="18" stroke="#2f5d50" stroke-width="3"/>
+<circle cx="592" cy="18" r="9" fill="none" stroke="#3a3a38" stroke-width="3"/>
+<rect x="600" y="16" width="26" height="5" fill="#3a3a38"/>
+<rect x="618" y="21" width="4" height="7" fill="#3a3a38"/>
+<circle cx="600" cy="18" r="13" fill="none" stroke="#d9b84a" stroke-width="1.5" opacity="0.8"/>
+</svg>

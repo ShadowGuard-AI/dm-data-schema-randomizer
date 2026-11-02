@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 48" role="img" aria-label="Major separator: an iron key turning in an unseen lock, on a full board green line with dust yellow and chalk pink accents from the banner palette">
+<line x1="20" y1="24" x2="520" y2="24" stroke="#2f5d50" stroke-width="5"/>
+<line x1="680" y1="24" x2="1180" y2="24" stroke="#2f5d50" stroke-width="5"/>
+<circle cx="600" cy="24" r="17" fill="none" stroke="#3a3a38" stroke-width="5"/>
+<rect x="614" y="20" width="52" height="8" fill="#3a3a38"/>
+<rect x="646" y="28" width="7" height="12" fill="#3a3a38"/>
+<rect x="660" y="28" width="7" height="9" fill="#3a3a38"/>
+<circle cx="600" cy="24" r="23" fill="none" stroke="#d9b84a" stroke-width="2"/>
+<circle cx="52" cy="24" r="5" fill="#d9a1a8"/><circle cx="1148" cy="24" r="5" fill="#d9a1a8"/>
+</svg>
